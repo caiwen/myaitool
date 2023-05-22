@@ -1,0 +1,1 @@
+SELECT COUNT(*) as cnt FROM gpt_img_record WHERE user_id=$user_id

@@ -1,0 +1,1 @@
+SELECT * FROM gpt_img_record WHERE user_id=$user_id ORDER BY id DESC LIMIT $offset,$page_size

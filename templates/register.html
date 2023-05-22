@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<!-- <html lang="zh-CN"> 向搜索引擎表示该页面是html语言，并且语言为中文网站，其"lang"的意思就是“language”，语言的意思，而“zh”即表示中文 -->
+<head>
+    <meta charset="utf-8">
+    <!--声明文档兼容模式，表示使用IE浏览器的最新模式，告诉IE浏览器，无论是否用DTD声明文档标准，IE8/9都会以IE8引擎来渲染页面。-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>用户注册</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/layui.css') }}">
+    <script src="{{ url_for('static',filename='layui.js') }}"></script>
+    <script src="{{ url_for('static',filename='echarts.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='layer/layer.js') }}"></script>
+
+    <!-- 引入Bootstrap核心样式文件 -->
+    <link href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body{
+        background: url("static/images/login-bg-s.fb7503e1.jpg") no-repeat center center fixed;
+                    /*兼容浏览器版本*/
+                    -webkit-background-size: cover;
+                    -o-background-size: cover;
+                    background-size: cover;
+      } /*背景图*/
+
+      .test {
+        margin-top: 100px;
+      }
+
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4" style="background-color: #fff;margin-top: 250px;">
+        <h1 class="text-center" style="padding-top:50px;  ">用户注册</h1>
+        <form class="form-horizontal layui-form" role="form" action="">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">账号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="account" required lay-verify="required" placeholder="请输入账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" required lay-verify="required" name="password" placeholder="请输入密码">
+                </div>
+            </div>
+
+             <div class="form-group">
+                <label class="col-sm-2 control-label">密码确认</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" required lay-verify="required" name="repassword" placeholder="请再次输入密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手机号码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="phone" required lay-verify="required" placeholder="请输入手机号码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">注册</button>
+                    已有账号去<a type="submit" class="btn btn-default col-sm-offset-4 " href="/login">登录</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+//Demo
+layui.use('form', function(){
+  var form = layui.form;
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+   var respData = data.field
+    $.post("/do_register", respData, function (result) {
+            if (result['code'] > 0 ) {
+                layer.msg(result['msg']);
+                return false;
+            }
+            $(location).attr('href', '/');
+        });
+    return false;
+  });
+});
+</script>
+</body>
+</html>

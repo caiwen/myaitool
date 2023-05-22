@@ -1,0 +1,1 @@
+SELECT prompt,img_url FROM gpt_img_record WHERE user_id=$user_id  ORDER BY created_time DESC LIMIT 5
