@@ -28,3 +28,4 @@ if __name__ == '__main__':
     data = OpenAi.create_image(
         prompt="一只狗",
         n=5, size="512x512", response_format='url')
+    print(data)

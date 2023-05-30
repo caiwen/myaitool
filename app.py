@@ -117,6 +117,8 @@ def chat():
         return redirect('/login')
     record_model = ImgRecordModel()
     latest_record = record_model.get_latest_record(userinfo['id'])
+    latest_record['img_url'] = latest_record['img_url'].split('|')
+    print(latest_record)
     return render_template('chat.html', latest_record=latest_record, userinfo=userinfo)
 
 
@@ -127,6 +129,8 @@ def picture():
         return redirect('/login')
     record_model = ImgRecordModel()
     latest_record = record_model.get_latest_record(userinfo['id'])
+    latest_record['img_url'] = latest_record['img_url'].split('|')
+    print(latest_record)
     return render_template('picture.html', latest_record=latest_record, userinfo=userinfo)
 
 
@@ -145,6 +149,7 @@ def img_generate():
             prompt=prompt,
             n=5, size="1024x1024")
     except Exception as e:
+        print(repr(e))
         return jsonify({
             "code": 1,
             "msg": repr(e)
@@ -158,12 +163,12 @@ def img_generate():
         MyTools.base64_save_img(item['b64_json'],
                                 approot.get_root() + os.sep + 'static' + os.sep + 'images' + os.sep + temp_img_name)
         img_name_lists.append(temp_img_name)
-        save_list.append(ImgRecordModelEntity(
-            prompt=prompt,
-            user_id=userinfo['id'],
-            img_url=temp_img_name
-        ))
 
+    save_list.append(ImgRecordModelEntity(
+        prompt=prompt,
+        user_id=userinfo['id'],
+        img_url="|".join(img_name_lists)
+    ))
     print(img_name_lists)
     record_model = ImgRecordModel()
     print(save_list)

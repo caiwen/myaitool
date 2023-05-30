@@ -30,7 +30,7 @@
                     {{ userinfo.name }}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="/logout">Sign out</a></dd>
+                    <dd><a href="/logout">退出</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
@@ -62,7 +62,7 @@
                     <div class="layui-form-item layui-form-text">
                         <div class="">
                     <textarea name="prompt"
-                              placeholder="{% if latest_record %} {{ latest_record[0].prompt }}  {% else %} 绘制指令(AI对中文理解能力有限，请用英文指令)：{% endif %}"
+                              placeholder="{% if latest_record %} {{ latest_record.prompt }}  {% else %} 绘制指令(AI对中文理解能力有限，请用英文指令)：{% endif %}"
                               class="layui-textarea" lay-verify="required"></textarea>
                         </div>
                     </div>
@@ -85,8 +85,8 @@
             <div class="layui-col-md12">
                 <div class="layui-carousel" id="img_show" align="center">
                     <div id="img_list" carousel-item>
-                        {% for record in latest_record %}
-                        <img src="static/images/{{ record.img_url }}">
+                        {% for record in latest_record.img_url %}
+                        <img src="static/images/{{ record }}">
                         {% endfor %}
                     </div>
                 </div>
@@ -162,13 +162,15 @@ table.render({
     cols: [[
       { field: 'prompt', title: '提示语', fixed: 'left' },
       {
-            field: 'img_url', title: '图片地址', templet: function (d) {
-                return "<a href='static/images/"+d.img_url+"' class='layui-table-link' target='_blank'>下载原图</a>";
-            }
-      },
-      {
             field: 'img_url', title: '图片预览', templet: function (d) {
-                return "<a href='static/images/"+d.img_url+"' class='layui-table-link' target='_blank'><img style='width: 50px; height: 50px;' src='static/images/"+d.img_url+"'></a>";
+                var img_list = d.img_url.split("|");
+                var img_arr = [];
+                for (img in img_list) {
+                   var img_url = img_list[img];
+                   console.log(img_url);
+                   img_arr.push("<a href='static/images/"+img_url+"' class='layui-table-link' target='_blank'><img style='width: 50px; height: 50px;' src='static/images/"+img_url+"'></a>")
+                }
+                return img_arr.join(' ');
             }
       },
       { field: 'created_time', title: '创建时间'}

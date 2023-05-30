@@ -52,7 +52,7 @@ class ImgRecordModel(DataBase):
     def get_latest_record(self, uid):
         tpl = SqlTemplate.template('latest_record.tpl')
         sql = string.Template(tpl).substitute(user_id=uid)
-        return self.fetch_all(sql)
+        return self.fetch_one(sql)
 
 
 if __name__ == '__main__':
